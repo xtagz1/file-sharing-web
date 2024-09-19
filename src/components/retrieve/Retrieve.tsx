@@ -21,6 +21,7 @@ export default function Retrieve() {
       setRetrieving(false);
     }
   };
+  
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPublicKey(event.target.value);
@@ -46,7 +47,7 @@ export default function Retrieve() {
 
         {fileData && (
           <div>
-            <DownloadButton blob={fileData.blob} fileName={publicKey} />
+            <DownloadButton blob={fileData.blob}  fileUrl={fileData?.filePath} fileName={publicKey} />
           </div>
         )}
       </div>

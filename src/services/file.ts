@@ -31,17 +31,29 @@ export const retrieveFile = async (publicKey: string) => {
       throw new Error('Error retrieving file, or the file has been deleted already. Please try again.');
     }
 
-    const blob = await response.blob();
-    return {
-      blob,
-      contentType: response.headers.get('Content-Type'),
-      contentDisposition: response.headers.get('Content-Disposition'),
-    };
+    const contentType = response.headers.get('Content-Type');
+    const contentDisposition = response.headers.get('Content-Disposition');
+
+    // Check if the response is a binary file (not JSON)
+    const isBinary = contentType && !contentType.startsWith('application/json');
+
+    if (isBinary) {
+      const blob = await response.blob();
+      return {
+        blob,
+        contentType,
+        contentDisposition,
+      };
+    } else {
+      const data = await response.json();
+      return data?.response?.filePath ? data.response : null;
+    }
   } catch (error) {
     console.error('Error:', error);
     throw error;
   }
 };
+
 
 
   export const deleteFile = async (privateKey: string) => {

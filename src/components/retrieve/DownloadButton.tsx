@@ -1,23 +1,26 @@
-const DownloadButton = ({ blob, fileName }: { blob: Blob, fileName: string }) => {
-  const handleDownload = () => {
-    if (!blob) return;
+const DownloadButton = ({ blob, fileName, fileUrl }: { blob: Blob | null; fileName: string; fileUrl: string }) => {
+  const buttonText = blob ? 'Download File' : 'Open URL';
 
-    // Create an object URL for the blob
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName || 'downloaded_file'; // Set filename
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = () => {
+    if (blob) {
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = fileName || 'downloaded_file';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else if (fileUrl) {
+      window.open(fileUrl, '_blank');
+    }
   };
 
   return (
     <button
       onClick={handleDownload}
-      disabled={!blob}
-      className={`underline ${!blob ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500'}`}
+      className={`underline ${!blob && !fileUrl ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500'}`}
+      disabled={!blob && !fileUrl}
     >
-      Download File
+      {buttonText}
     </button>
   );
 };
