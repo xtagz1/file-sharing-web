@@ -10,3 +10,8 @@ export interface UploadedFile {
     updatedAt: string; 
     userId: string | null; 
   }
+
+  export interface RetrievedFile {
+    filePath:string;
+    mimeType:string;
+  }

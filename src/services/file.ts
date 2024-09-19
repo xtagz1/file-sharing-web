@@ -39,3 +39,22 @@ export const retrieveFile = async (publicKey: string) => {
       throw error; 
     }
   };
+
+  export const deleteFile = async (privateKey: string) => {
+    try { 
+  
+      const response = await fetch(`${backendUrl}/files/${privateKey}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error deleting file Please try again.');
+      }
+  
+      const data = await response.json();
+      return data?.response; 
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; 
+    }
+  };

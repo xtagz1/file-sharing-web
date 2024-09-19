@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { retrieveFile } from "@/services/file";
+import { deleteFile } from "@/services/file";
 import { Input } from "@/components/ui/input"
 
 
@@ -13,7 +13,7 @@ const [error, setError] = useState('');
 const handleRetrieve = async () => {
     setdeleting(true)
     try {
-        const data = await retrieveFile(privateKey)
+        const data = await deleteFile(privateKey)
         setprivateKey(data)
     } catch (error:any) {
       setError(error.message);
