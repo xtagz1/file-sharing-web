@@ -6,7 +6,7 @@ const DownloadButton = ({ filePath }: { filePath: string }) => {
 
     const link = document.createElement('a');
     link.href = filePath;
-    link.target = '_blank'; // Open the link in a new tab
+    link.target = '_blank'; 
     link.download = ''; // This attribute is used for setting the filename
     document.body.appendChild(link);
     link.click();

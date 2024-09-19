@@ -15,3 +15,25 @@ export interface UploadedFile {
     filePath:string;
     mimeType:string;
   }
+
+
+
+  export interface DeletedFileResponse {
+    success: boolean;
+    message: string;
+    response: DeletedFile;
+  }
+  
+  export interface DeletedFile {
+    id: number;
+    userId: number | null; 
+    isLocal: boolean;
+    config: string;
+    publicKey: string;
+    privateKey: string;
+    filePath: string;
+    lastActivity: string; 
+    createdAt: string;    
+    updatedAt: string;   
+  }
+  

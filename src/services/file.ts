@@ -52,7 +52,7 @@ export const retrieveFile = async (publicKey: string) => {
       }
   
       const data = await response.json();
-      return data?.response; 
+      return data; 
     } catch (error) {
       console.error('Error:', error);
       throw error; 
