@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Button } from '../ui/button';
-import { UploadedFile } from '@/interface/file';
 import { uploadFile } from '@/services/file';
+import { useUploadStore } from '@/stores/uploadStore';
 
 export default function Upload() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
-  const [uploadedFile, setUploadFile] = useState<UploadedFile | null>(null);
+  const {updateUploadData, uploadData} = useUploadStore()
+
   const handleFileChange = (event:any) => {
     setFile(event.target.files[0]);
   };
@@ -24,7 +25,7 @@ export default function Upload() {
     formData.append('file', file); 
     try {
         const data= await uploadFile(formData)
-        setUploadFile(data)
+        updateUploadData(data)
     } catch (error:any) {
       setError(error.message);
     } finally {
@@ -50,16 +51,16 @@ export default function Upload() {
         </div>
       )
       }
-      { uploadedFile && (
+      { uploadData && (
         <div className='flex flex-col gap-2'>
             <div className='text-lg font-semibold'>
                 Uploaded file successfully
             </div>
             <div>
-                <strong>Public Key:</strong>   {uploadedFile?.publicKey}
+                <strong>Public Key:</strong>   {uploadData?.publicKey}
             </div>
             <div>
-            <strong>Private Key:</strong>  {uploadedFile?.privateKey}
+            <strong>Private Key:</strong>  {uploadData?.privateKey}
             </div>
         </div>
       )

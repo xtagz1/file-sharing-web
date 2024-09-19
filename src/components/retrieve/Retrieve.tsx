@@ -2,19 +2,18 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { retrieveFile } from "@/services/file";
 import { Input } from "@/components/ui/input";
-import { RetrievedFile } from "@/interface/file";
 import DownloadButton from "./DownloadButton"; 
 
 export default function Retrieve() {
   const [retrieving, setRetrieving] = useState(false);
   const [publicKey, setPublicKey] = useState('');
   const [error, setError] = useState('');
-  const [fileData, setFileData] = useState<RetrievedFile | null>(null);
+  const [fileData, setFileData] = useState<any>(null);
 
   const handleRetrieve = async () => {
     try {
       setRetrieving(true);
-      const data = await retrieveFile(publicKey);
+      const data: any = await retrieveFile(publicKey);
       setFileData(data);
     } catch (error: any) {
       setError(error.message);
@@ -47,13 +46,7 @@ export default function Retrieve() {
 
         {fileData && (
           <div>
-            <div>
-              <strong>FILE:</strong> {fileData.filePath}
-            </div>
-            <div>
-              <strong>MIME TYPE:</strong> {fileData.mimeType}
-            </div>
-            <DownloadButton filePath={fileData.filePath} />
+            <DownloadButton blob={fileData.blob} fileName={publicKey} />
           </div>
         )}
       </div>

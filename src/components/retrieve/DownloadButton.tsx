@@ -1,13 +1,11 @@
-
-const DownloadButton = ({ filePath }: { filePath: string }) => {
+const DownloadButton = ({ blob, fileName }: { blob: Blob, fileName: string }) => {
   const handleDownload = () => {
-    // Ensure the filePath is valid
-    if (!filePath) return;
+    if (!blob) return;
 
+    // Create an object URL for the blob
     const link = document.createElement('a');
-    link.href = filePath;
-    link.target = '_blank'; 
-    link.download = ''; // This attribute is used for setting the filename
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName || 'downloaded_file'; // Set filename
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -16,8 +14,8 @@ const DownloadButton = ({ filePath }: { filePath: string }) => {
   return (
     <button
       onClick={handleDownload}
-      disabled={!filePath}
-      className={`underline ${!filePath ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500'}`}
+      disabled={!blob}
+      className={`underline ${!blob ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500'}`}
     >
       Download File
     </button>

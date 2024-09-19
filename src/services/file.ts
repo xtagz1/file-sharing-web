@@ -22,23 +22,27 @@ export const uploadFile = async (formData: any) => {
 };
 
 export const retrieveFile = async (publicKey: string) => {
-    try { 
-  
-      const response = await fetch(`${backendUrl}/files/${publicKey}`, {
-        method: 'GET',
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error retrieving file Please try again.');
-      }
-  
-      const data = await response.json();
-      return data?.response; 
-    } catch (error) {
-      console.error('Error:', error);
-      throw error; 
+  try { 
+    const response = await fetch(`${backendUrl}/files/${publicKey}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Error retrieving file, or the file has been deleted already. Please try again.');
     }
-  };
+
+    const blob = await response.blob();
+    return {
+      blob,
+      contentType: response.headers.get('Content-Type'),
+      contentDisposition: response.headers.get('Content-Disposition'),
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
 
   export const deleteFile = async (privateKey: string) => {
     try { 
@@ -48,7 +52,7 @@ export const retrieveFile = async (publicKey: string) => {
       });
   
       if (!response.ok) {
-        throw new Error('Error deleting file Please try again.');
+        throw new Error('Error deleting file, or the file is deleted already Please try again.');
       }
   
       const data = await response.json();
